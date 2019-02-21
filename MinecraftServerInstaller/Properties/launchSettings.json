@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MinecraftServerInstaller": {
+      "commandName": "Project",
+      "commandLineArgs": "servers.config.json"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MinecraftClientInstaller": {
+      "commandName": "Project",
+      "commandLineArgs": "mod.package.json"
+    }
+  }
+}

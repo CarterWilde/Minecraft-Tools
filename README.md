@@ -9,3 +9,7 @@ Make sure you have the dotnet runtime
 
 ## Using the ServerManager
 Right now it's in a super basic form so all you have to do is execute the dll with a arg of the server setup
+
+##Trello Board
+See what is being worked on, and what you could work on also.
+https://trello.com/b/WvUrgxlv/minecraft-tools

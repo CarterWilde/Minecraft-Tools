@@ -58,11 +58,11 @@ namespace MinecraftServerManager.Controllers {
       if (isGui) {
         process.StartInfo.ArgumentList.Add("nogui");
       }
-      //process.StartInfo.RedirectStandardOutput = true;
+      process.StartInfo.RedirectStandardOutput = true;
       process.StartInfo.RedirectStandardInput = true;
       Thread thread = new Thread(() => {
         if (process.Start()) {
-          //ServerOutputStreams.Add(server.Name, process.StandardOutput);
+          ServerOutputStreams.Add(server.Name, process.StandardOutput);
           ServerInputStreams.Add(server.Name, process.StandardInput);
         }
       }) {

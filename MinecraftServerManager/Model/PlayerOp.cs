@@ -1,7 +1,6 @@
-﻿using MinecraftServerInstaller.Model;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
-namespace MinecraftServerInstaller {
+namespace MinecraftServerManager.Model {
   public class PlayerOp {
     [JsonExtensionData]
     public Player Player { get; set; }

@@ -1,5 +1,4 @@
-﻿
-using MinecraftServerInstaller.Controllers;
+﻿using MinecraftServerManager.Controllers;
 using System;
 
 namespace MinecraftServerInstaller {

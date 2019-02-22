@@ -3,7 +3,7 @@
     "Name": "Carter's Servers",
     "Version": "1.0.0",
     "Path": "./Servers",
-    "BackupsPath": "./Backups",
+    "BackupsPath": "./Backups"
   },
   "Servers": [
     {
@@ -11,9 +11,10 @@
       "GameVersion": "1.7.10",
       "MinecraftServerUrl": "https://launcher.mojang.com/v1/objects/952438ac4e01b4d115c5fc38f891710c4941df29/server.jar",
       "VMProperties": {
-        "Xmx": "2048",
-        "Xms": "2048",
-        "NoGui": "true "
+        "Xmx": "2048M",
+        "Xms": "2048M",
+        "jar": "true",
+        "nogui": "true"
       },
       "Properties": {
         "op-permission-level": "4",
@@ -50,9 +51,10 @@
       "GameVersion": "1.7.10",
       "MinecraftServerUrl": "https://launcher.mojang.com/v1/objects/952438ac4e01b4d115c5fc38f891710c4941df29/server.jar",
       "VMProperties": {
-        "Xmx": "2048",
-        "Xms": "2048",
-        "NoGui": "true "
+        "Xmx": "2048M",
+        "Xms": "2048M",
+        "jar": "true",
+        "nogui": "true"
       },
       "Properties": {
         "op-permission-level": "4",
@@ -89,9 +91,10 @@
       "GameVersion": "1.7.10",
       "MinecraftServerUrl": "https://launcher.mojang.com/v1/objects/952438ac4e01b4d115c5fc38f891710c4941df29/server.jar",
       "VMProperties": {
-        "Xmx": "2048",
-        "Xms": "2048",
-        "NoGui": "true "
+        "Xmx": "2048M",
+        "Xms": "2048M",
+        "jar": "true",
+        "nogui": "true"
       },
       "Properties": {
         "op-permission-level": "4",
@@ -128,9 +131,10 @@
       "GameVersion": "1.7.10",
       "MinecraftServerUrl": "https://launcher.mojang.com/v1/objects/952438ac4e01b4d115c5fc38f891710c4941df29/server.jar",
       "VMProperties": {
-        "Xmx": "2048",
-        "Xms": "2048",
-        "NoGui": "true "
+        "Xmx": "2048M",
+        "Xms": "2048M",
+        "jar": "true",
+        "nogui": "true"
       },
       "Properties": {
         "op-permission-level": "4",
@@ -167,9 +171,10 @@
       "GameVersion": "1.7.10",
       "MinecraftServerUrl": "https://launcher.mojang.com/v1/objects/952438ac4e01b4d115c5fc38f891710c4941df29/server.jar",
       "VMProperties": {
-        "Xmx": "2048",
-        "Xms": "2048",
-        "NoGui": "true "
+        "Xmx": "2048M",
+        "Xms": "2048M",
+        "jar": "true",
+        "nogui": "true"
       },
       "Properties": {
         "op-permission-level": "4",
@@ -206,9 +211,10 @@
       "GameVersion": "1.7.10",
       "MinecraftServerUrl": "https://launcher.mojang.com/v1/objects/952438ac4e01b4d115c5fc38f891710c4941df29/server.jar",
       "VMProperties": {
-        "Xmx": "2048",
-        "Xms": "2048",
-        "NoGui": "true "
+        "Xmx": "2048M",
+        "Xms": "2048M",
+        "jar": "true",
+        "nogui": "true"
       },
       "Properties": {
         "op-permission-level": "4",

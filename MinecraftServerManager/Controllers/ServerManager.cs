@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace MinecraftServerInstaller.Controllers {
   class ServerManager {
@@ -43,16 +44,21 @@ namespace MinecraftServerInstaller.Controllers {
     public void Run(Server server) {
       Process process = new Process();
       process.StartInfo.FileName = $"java";
-      process.StartInfo.ArgumentList.Add($"-Xmx{server.VMProperties.Xmx}M");
-      process.StartInfo.ArgumentList.Add($"-Xms{server.VMProperties.Xms}M");
-      process.StartInfo.ArgumentList.Add("-jar");
+      bool isGui = true;
+      Parallel.ForEach(server.VMProperties.Keys, (key) => {
+        if (key == "nogui") {
+          isGui = true;
+          return;
+        }
+        process.StartInfo.ArgumentList.Add(ToArgString(key, server.VMProperties[key]));
+      });
       process.StartInfo.WorkingDirectory = $"{Config.ConfigMeta.Path}/{server.Name}";
       process.StartInfo.ArgumentList.Add($"[{server.GameVersion}]server.jar");
+      if (isGui) {
+        process.StartInfo.ArgumentList.Add("nogui");
+      }
       //process.StartInfo.RedirectStandardOutput = true;
       process.StartInfo.RedirectStandardInput = true;
-      if (server.VMProperties.NoGui) {
-        process.StartInfo.ArgumentList.Add($"nogui");
-      }
       Thread thread = new Thread(() => {
         if (process.Start()) {
           //ServerOutputStreams.Add(server.Name, process.StandardOutput);
@@ -61,9 +67,23 @@ namespace MinecraftServerInstaller.Controllers {
       }) {
         Name = server.Name
       };
-      Console.WriteLine("Starting Thread[{0}]", thread.Name);
+      Console.WriteLine("StartingThread[{0}]", thread.Name);
       ServerThreads.Add(thread.Name, thread);
       thread.Start();
+    }
+
+    public static string ToArgString(string key, string value) {
+      if (key == "nogui") {
+        return String.Empty;
+      } else if (value == "true" || value == "false") {
+        if (value == "false") {
+          return String.Empty;
+        }
+        if (value == "true") {
+          return "-" + key;
+        }
+      }
+      return "-" + key + value;
     }
 
     public void KillAll() {
@@ -71,14 +91,14 @@ namespace MinecraftServerInstaller.Controllers {
         Thread thread = new Thread(() => {
           Kill(server);
         }) {
-          Name = $"Killer Thread[{server.Name}]"
+          Name = $"KillerThread[{server.Name}]"
         };
-        Console.WriteLine("Starting killer thread " + thread.Name);
+        Console.WriteLine("Starting Killer Thread " + thread.Name);
       }
     }
 
     public void Kill(Server server) {
-      Console.WriteLine($"Killing thread[{server.Name}]");
+      Console.WriteLine($"KillingThread[{server.Name}]");
       ServerInputStreams[server.Name].WriteLine("stop");
     }
   }

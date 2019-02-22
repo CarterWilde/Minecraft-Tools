@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace MinecraftServerInstaller.Controllers {
+namespace MinecraftServerManager.Controllers {
   class ConsoleWirter : TextWriter {
     readonly ConsoleColor DefaultBackColor;
     readonly ConsoleColor DefaultForeColor;

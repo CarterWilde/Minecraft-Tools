@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using MinecraftServerManager.Model;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MinecraftServerInstaller.Controllers {
+namespace MinecraftServerManager.Controllers {
   public class ServerBuilder {
     public ServerConfig Config { get; private set; }
 

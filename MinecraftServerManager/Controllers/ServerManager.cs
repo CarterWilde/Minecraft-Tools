@@ -1,11 +1,12 @@
-﻿using System;
+﻿using MinecraftServerManager.Model;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MinecraftServerInstaller.Controllers {
+namespace MinecraftServerManager.Controllers {
   class ServerManager {
     public ServerConfig Config { get; private set; }
     //The key is the servers ThreadName the threadname should be the server name 

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MinecraftServerInstaller.Model {
+namespace MinecraftServerManager.Model {
   public class Player {
     [JsonProperty("uuid")]
     public string Uuid { get; set; }

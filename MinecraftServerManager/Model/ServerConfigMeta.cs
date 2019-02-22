@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MinecraftServerInstaller {
+namespace MinecraftServerManager.Model {
   public class ServerConfigMeta {
     public readonly string EULA = $"#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).{Environment.NewLine}#{DateTime.Now}{Environment.NewLine}eula=true";
 

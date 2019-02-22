@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MinecraftServerInstaller {
+namespace MinecraftServerManager.Model {
   public class Server {
     public string Name { get; set; }
     public string GameVersion { get; set; }

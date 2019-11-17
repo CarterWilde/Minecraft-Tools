@@ -1,4 +1,4 @@
-﻿using MinecraftServerManager.Model;
+﻿using MinecraftServerManager.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

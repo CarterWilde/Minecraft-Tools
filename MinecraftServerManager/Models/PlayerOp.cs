@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace MinecraftServerManager.Model {
+namespace MinecraftServerManager.Models {
   public class PlayerOp {
     [JsonExtensionData]
     public Player Player { get; set; }

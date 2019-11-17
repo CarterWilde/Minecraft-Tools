@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace MinecraftServerManager.Model {
+namespace MinecraftServerManager.Models {
   public class PlayerBan {
     [JsonExtensionData]
     public Player Player { get; set; }

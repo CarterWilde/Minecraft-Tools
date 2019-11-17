@@ -1,10 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MinecraftServerManager.Models {
-  public class ServerConfigMeta {
+  public class ServerConfig : Server {
     public readonly string EULA = $"#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).{Environment.NewLine}#{DateTime.Now}{Environment.NewLine}eula=true";
-
-    public string Name { get; set; }
     public string Version { get; set; }
     private string path;
     public string Path {
@@ -15,6 +14,7 @@ namespace MinecraftServerManager.Models {
         path = value;
       }
     }
-    public string BackupsPath { get; set; }
+
+    public IList<Server> Servers { get; set; }
   }
 }

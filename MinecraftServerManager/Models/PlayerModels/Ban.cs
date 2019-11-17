@@ -1,10 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace MinecraftServerManager.Models {
-  public class PlayerBan {
-    [JsonExtensionData]
-    public Player Player { get; set; }
+namespace MinecraftServerManager.Models.PlayerModels {
+  public class Ban : Player {
     [JsonProperty("created")]
     public DateTime Created { get; set; }
     [JsonProperty("source")]

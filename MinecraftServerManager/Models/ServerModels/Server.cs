@@ -1,9 +1,9 @@
 ﻿using MinecraftServerManager.Models.PlayerModels;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace MinecraftServerManager.Models {
   public class Server {
-
     public string Name { get; set; }
     public string GameVersion { get; set; }
     public string ServerURL { get; set; }

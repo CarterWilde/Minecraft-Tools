@@ -1,15 +1,16 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace MinecraftServerManager.Models.PlayerModels {
   public class Ban : Player {
-    [JsonProperty("created")]
+    [JsonPropertyName("created")]
     public DateTime Created { get; set; }
-    [JsonProperty("source")]
+    [JsonPropertyName("source")]
     public string Source { get; set; }
-    [JsonProperty("expires")]
+    [JsonPropertyName("expires")]
     public string Expires { get; set; }
-    [JsonProperty("reason")]
+    [JsonPropertyName("reason")]
     public string Reason { get; set; }
   }
 }

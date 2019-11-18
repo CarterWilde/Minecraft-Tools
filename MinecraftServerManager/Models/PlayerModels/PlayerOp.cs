@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace MinecraftServerManager.Models.PlayerModels {
   public class Op : Player {
-    [JsonProperty("level")]
+    [JsonPropertyName("level")]
     public OpLevel Level { get; set; }
   }
 }

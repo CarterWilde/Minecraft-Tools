@@ -1,13 +1,13 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace MinecraftServerManager.Models.PlayerModels {
   public class Player {
-    [JsonProperty("uuid")]
+    [JsonPropertyName("uuid")]
     public string Uuid { get; set; }
-    [JsonProperty("name")]
+    [JsonPropertyName("name")]
     public string Name { get; set; }
   }
 }

@@ -20,7 +20,7 @@ namespace MinecraftServerManager {
                                                 group server by server.ServerURL
                                                 into newGroup select newGroup)
                                                .Select(grp => grp.ToList()).ToList();
-
+      
       IList<Server> downloadList = new List<Server>();
       foreach(List<ServerManager> group in serverGroups) {
         downloadList.Add(group.First());

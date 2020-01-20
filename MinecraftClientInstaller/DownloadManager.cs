@@ -6,7 +6,7 @@ using System.Net;
 using System.Threading.Tasks;
 
 namespace MinecraftClientInstaller {
-  class DownloadManager {
+  public class DownloadManager {
     private string ModpackPath { get; }
     private readonly string GameVersion;
 

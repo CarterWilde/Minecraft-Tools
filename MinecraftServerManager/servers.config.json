@@ -41,6 +41,26 @@
         "view-distance": "10",
         "spawn-protection": "16",
         "motd": "A Minecraft Server"
+      },
+      "Mods": {
+        "Name": "Carter's Modpack",
+        "Authors": [ "Carter Wilde" ],
+        "Version": "1.0.0",
+        "GameVersion": "1.7.10",
+        "Joint": [
+          {
+            "Name": "Buildcraft",
+            "Version": "7.1.23",
+            "Uri": "https://www.mod-buildcraft.com/releases/BuildCraft/7.1.23/buildcraft-7.1.23.jar",
+            "Dependencies": [
+              {
+                "Name": "BuildcraftCompact",
+                "Version": "7.1.7",
+                "Uri": "https://www.mod-buildcraft.com/releases/BuildCraftCompat/7.1.7/buildcraft-compat-7.1.7.jar"
+              }
+            ]
+          }
+        ]
       }
     }
   ]

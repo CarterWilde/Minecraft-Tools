@@ -1,4 +1,5 @@
-﻿using MinecraftServerManager.Models;
+﻿using MinecraftClientInstaller;
+using MinecraftServerManager.Models;
 using MinecraftServerManager.Models.ServerModels;
 using System;
 using System.Collections.Generic;
@@ -41,8 +42,12 @@ namespace MinecraftServerManager {
     }
 
     public async Task Build(Server server) {
-      Directory.CreateDirectory(Path.Combine(Config.Path, server.Name));
+      string path = Path.Combine(Config.Path, server.Name);
+      Directory.CreateDirectory(path);
       await DownloadServerBinarys(server);
+      DownloadManager manager = new DownloadManager(Path.Combine(path, "mods"), server.GameVersion);
+      manager.DownloadMods(server.Mods.Joint);
+      manager.DownloadMods(server.Mods.Server);
     }
 
     public async Task Build(Server server, Server downloadServer) {

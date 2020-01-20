@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace MinecraftClientInstaller.Model {
-  class Modpack {
+  public class Modpack {
     public string Name { get; set; }
     public IList<string> Authors { get; set; }
     public string Version { get; set; }

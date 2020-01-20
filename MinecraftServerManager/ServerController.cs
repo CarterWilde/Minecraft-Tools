@@ -25,7 +25,7 @@ namespace MinecraftServerManager {
 
     public void StopAll() {
       Parallel.ForEach(Config.Servers, async server => {
-        server.Stop().Wait();
+        await server.Stop();
       });
     }
   }

@@ -12,11 +12,11 @@ namespace MinecraftClientInstaller{
       InDebug = true;
 #endif
       Modpack modpack = DeserializeModpack(args[0]);
-      string ModpackPath = $"{Environment.GetEnvironmentVariable("AppData") + "\\.minecraft\\mods"}\\{modpack.Meta.GameVersion}";
+      string ModpackPath = $"{Environment.GetEnvironmentVariable("AppData") + "\\.minecraft\\mods"}\\{modpack.GameVersion}";
       if (InDebug) {
-        ModpackPath = $".\\{modpack.Meta.GameVersion}";
+        ModpackPath = $".\\{modpack.GameVersion}";
       }
-      DownloadManager manager = new DownloadManager(ModpackPath, modpack.Meta.GameVersion);
+      DownloadManager manager = new DownloadManager(ModpackPath, modpack.GameVersion);
       Console.WriteLine("Downloading to " + ModpackPath);
       Console.WriteLine("Starting Downloads! Some of these mods might be large, so it could be awhile.");
       manager.DownloadMods(modpack?.Joint);

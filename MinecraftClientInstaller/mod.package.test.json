@@ -1,10 +1,8 @@
 {
-  "Meta": {
-    "Name": "Carter's Modpack",
-    "Authors": [ "Carter Wilde" ],
-    "Version": "1.0.0",
-    "GameVersion": "1.7.10"
-  },
+  "Name": "Carter's Modpack",
+  "Authors": [ "Carter Wilde" ],
+  "Version": "1.0.0",
+  "GameVersion": "1.7.10",
   "Server": null,
   "Joint": [
     {

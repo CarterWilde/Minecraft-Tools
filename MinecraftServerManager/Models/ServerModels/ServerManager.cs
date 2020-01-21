@@ -25,6 +25,7 @@ namespace MinecraftServerManager.Models.ServerModels {
       Process.StartInfo = StartInfo;
       Process.StartInfo.RedirectStandardInput = true;
       Process.StartInfo.RedirectStandardOutput = true;
+      Process.StartInfo.WorkingDirectory = $"Servers/{Name}";
       Process.Start();
       OutputStream = Process.StandardOutput;
       InputStream = Process.StandardInput;
@@ -33,27 +34,6 @@ namespace MinecraftServerManager.Models.ServerModels {
     public async Task Stop() {
       Process.Kill();
       await Task.CompletedTask;
-    }
-
-    public void initStreams() {
-      InputStream = Process.StandardInput;
-      OutputStream = Process.StandardOutput;
-    }
-
-    public static string ToArgString(string key, string value) {
-      if(key == "nogui") {
-        return String.Empty;
-      } else {
-        bool boolValue = Boolean.Parse(value);
-        if(!boolValue) {
-          return String.Empty;
-        }
-        else if(boolValue) {
-          return "-" + key;
-        } else {
-          return "-" + key + value;
-        }
-      }
     }
   }
 }

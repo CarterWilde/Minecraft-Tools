@@ -45,9 +45,13 @@ namespace MinecraftServerManager {
       string path = Path.Combine(Config.Path, server.Name);
       Directory.CreateDirectory(path);
       await DownloadServerBinarys(server);
-      DownloadManager manager = new DownloadManager(Path.Combine(path, "mods"), server.GameVersion);
-      manager.DownloadMods(server.Mods.Joint);
-      manager.DownloadMods(server.Mods.Server);
+      await CreateEULA(server);
+      await CreateProperites(server);
+      if(server.Modpack != null) {
+        DownloadManager manager = new DownloadManager(Path.Combine(path, "mods"), server.GameVersion);
+        manager.DownloadMods(server.Modpack.Joint);
+        manager.DownloadMods(server.Modpack.Server);
+      }
     }
 
     public async Task Build(Server server, Server downloadServer) {
@@ -68,6 +72,26 @@ namespace MinecraftServerManager {
         await client.DownloadFileTaskAsync(new Uri(server.ServerURL), DownloadPath);
       }
       Console.WriteLine($"Finished downloading server binarys for {server.Name}!");
+    }
+
+    //Create EULA file and set it to true by default
+    public async Task CreateEULA(Server server) {
+      using(FileStream stream = new FileStream(Config.Path + "/" + server.Name + "/eula.txt", FileMode.Create, FileAccess.ReadWrite)) {
+        using(StreamWriter writer = new StreamWriter(stream)) {
+          await writer.WriteAsync(Config.EULA);
+        }
+      }
+    }
+
+    //Create server.properties file
+    public async Task CreateProperites(Server server) {
+      using(FileStream stream = new FileStream(Config.Path + "/" + server.Name + "/server.properties", FileMode.Create, FileAccess.ReadWrite)) {
+        using(StreamWriter writer = new StreamWriter(stream)) {
+          foreach(string key in server.Properties.Keys) {
+            await writer.WriteAsync(ModelSerializer.ToPropertiesString(key, server.Properties[key]) + Environment.NewLine);
+          }
+        }
+      }
     }
   }
 }

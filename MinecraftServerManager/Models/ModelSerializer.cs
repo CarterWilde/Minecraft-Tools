@@ -34,37 +34,33 @@ namespace MinecraftServerManager.Models {
       return Regex.Replace(key, @"(?<=[a-z])([A-Z])", @"-$1").ToLower() + "=" + value;
     }
 
-    public static ProcessStartInfo PropertiesToStartInfo(Server server, ServerConfig config) {
+    public static ProcessStartInfo VMPropertiesToStartInfo(Server server, ServerConfig config) {
       ProcessStartInfo info = new ProcessStartInfo("java");
       info.WorkingDirectory = $"{config.Path}/{server.Name}";
+      bool nogui = false;
       foreach(string key in server.VMProperties.Keys) {
-          bool flag = false;
-          try {
-            flag = Boolean.Parse(server.VMProperties[key]);
+        bool flag = false;
+        try {
+          flag = Boolean.Parse(server.VMProperties[key]);
+        }
+        catch(FormatException e) {
+          flag = false;
+        }
+        if(key.Equals("nogui")) {
+          if(flag) {
+            nogui = true;
           }
-          catch(FormatException e) {
-            flag = false;
-          }
-          if(!key.Equals("jar")) {
-            if(!flag) {
-                info.ArgumentList.Add($"-{key}{server.VMProperties[key]}");
-            } else {
-              info.ArgumentList.Add($"-{key}");
-            }
-          }
-      }
-      info.ArgumentList.Add("-jar");
-      info.ArgumentList.Add($"[{server.GameVersion}]server.jar");
-      return info;
-    }
-
-    //Create EULA file and set it to true by default
-    public async Task CreateEULA(ServerConfig config, Server server) {
-      using(FileStream stream = new FileStream(config.Path + "/" + server.Name + "/eula.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite)) {
-        using(StreamWriter writer = new StreamWriter(stream)) {
-          await writer.WriteAsync(config.EULA);
+        } else if(!key.Equals("jar") && !flag) {
+          info.ArgumentList.Add($"-{key}{server.VMProperties[key]}");
+        } else {
+          info.ArgumentList.Add($"-{key}");
         }
       }
+      info.ArgumentList.Add($"[{server.GameVersion}]server.jar");
+      if(nogui) {
+        info.ArgumentList.Add("nogui");
+      }
+      return info;
     }
   }
 }

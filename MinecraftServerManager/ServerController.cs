@@ -9,16 +9,21 @@ using System.Collections.Generic;
 namespace MinecraftServerManager {
   class ServerController {
     public ServerConfig Config { get; private set; }
-    public IDictionary<string, Thread> ServerThreads { get; set; }
+    IDictionary<string, Thread> ServerThreads { get; set; }
     public ServerController(ServerConfig config) {
       Config = config;
       ServerThreads = new Dictionary<string, Thread>();
       foreach(ServerManager server in Config.Servers) {
-        server.StartInfo = Models.ModelSerializer.PropertiesToStartInfo(server, Config);
+        server.StartInfo = Models.ModelSerializer.VMPropertiesToStartInfo(server, Config);
+      }
+    }
+
+    public void StartAll() {
+      foreach(ServerManager server in Config.Servers) {
         Thread serverThread = new Thread(async () => {
           await server.Start();
-          server.initStreams();
         });
+        serverThread.Start();
         ServerThreads.Add(server.Name, serverThread);
       }
     }

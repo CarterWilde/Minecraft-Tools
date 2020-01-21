@@ -1,8 +1,7 @@
 ﻿using MinecraftClientInstaller.Model;
-using Newtonsoft.Json;
+using System.Text.Json;
 using System;
 using System.IO;
-using System.Runtime.Serialization.Json;
 
 namespace MinecraftClientInstaller{
   class Program {
@@ -13,21 +12,21 @@ namespace MinecraftClientInstaller{
       InDebug = true;
 #endif
       Modpack modpack = DeserializeModpack(args[0]);
-      string ModpackPath = $"{Environment.GetEnvironmentVariable("AppData") + "\\.minecraft\\mods"}\\{modpack.Meta.GameVersion}";
+      string ModpackPath = $"{Environment.GetEnvironmentVariable("AppData") + "\\.minecraft\\mods"}\\{modpack.GameVersion}";
       if (InDebug) {
-        ModpackPath = $".\\{modpack.Meta.GameVersion}";
+        ModpackPath = $".\\{modpack.GameVersion}";
       }
-      DownloadManager manager = new DownloadManager(ModpackPath, modpack.Meta.GameVersion);
+      DownloadManager manager = new DownloadManager(ModpackPath, modpack.GameVersion);
       Console.WriteLine("Downloading to " + ModpackPath);
       Console.WriteLine("Starting Downloads! Some of these mods might be large, so it could be awhile.");
-      manager.DownloadMods(modpack.Joint);
-      manager.DownloadMods(modpack.Client);
+      manager.DownloadMods(modpack?.Joint);
+      manager.DownloadMods(modpack?.Client);
     }
 
     static Modpack DeserializeModpack(string FileName) {
       using (FileStream package = new FileStream(FileName, FileMode.OpenOrCreate, FileAccess.ReadWrite)) {
         using (StreamReader stream = new StreamReader(package)) {
-          return JsonConvert.DeserializeObject<Modpack>(stream.ReadToEnd());
+          return JsonSerializer.Deserialize<Modpack>(stream.ReadToEnd());
         }
       }
     }

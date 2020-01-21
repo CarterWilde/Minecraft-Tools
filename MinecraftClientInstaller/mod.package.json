@@ -1,41 +1,9 @@
 {
-  "Meta": {
-    "Name": "Carter's Modpack",
-    "Authors": [ "Carter Wilde" ],
-    "Version": "1.0.0",
-    "GameVersion": "1.7.10"
-  },
-  "Server": null,
+  "Name": "Carter's Modpack",
+  "Authors": [ "Carter Wilde" ],
+  "Version": "1.0.0",
+  "GameVersion": "1.7.10",
   "Joint": [
-    {
-      "Name": "Trecapitator",
-      "Version": "2.0.4",
-      "Uri": "https://minecraft.curseforge.com/projects/treecapitator/files/2218771/download",
-      "Dependencies": [
-        {
-          "Name": "bspkrsCore",
-          "Version": "6.16",
-          "Uri": "https://minecraft.curseforge.com/projects/bspkrscore/files/2227503/download"
-        }
-      ]
-    },
-    {
-      "Name": "OpenBlocks",
-      "Version": "1.6",
-      "Uri": "https://minecraft.curseforge.com/projects/openblocks/files/2386733/download",
-      "Dependencies": [
-        {
-          "Name": "OpenModsLib",
-          "Version": "0.10",
-          "Uri": "https://minecraft.curseforge.com/projects/openmodslib/files/2386726/download"
-        }
-      ]
-    },
-    {
-      "Name": "IronChests",
-      "Version": "6.0.62.742",
-      "Uri": "https://minecraft.curseforge.com/projects/iron-chests/files/2230908/download"
-    },
     {
       "Name": "Buildcraft",
       "Version": "7.1.23",
@@ -45,42 +13,6 @@
           "Name": "BuildcraftCompact",
           "Version": "7.1.7",
           "Uri": "https://www.mod-buildcraft.com/releases/BuildCraftCompat/7.1.7/buildcraft-compat-7.1.7.jar"
-        }
-      ]
-    },
-    {
-      "Name": "ThermalExpansion",
-      "Version": "4.1.5-284",
-      "Uri": "https://minecraft.curseforge.com/projects/thermalexpansion/files/2388758/download",
-      "Dependencies": [
-        {
-          "Name": "ThermalFoundation",
-          "Version": "1.2.6-118",
-          "Uri": "https://minecraft.curseforge.com/projects/thermal-foundation/files/2388752/download"
-        },
-        {
-          "Name": "CoFHCore",
-          "Version": "3.1.4-329",
-          "Uri": "https://minecraft.curseforge.com/projects/cofhcore/files/2388750/download"
-        }
-      ]
-    },
-    {
-      "Name": "BiomesOPlenty",
-      "Version": "2.1.0.2308",
-      "Uri": "https://minecraft.curseforge.com/projects/biomes-o-plenty/files/2499612/download"
-    }
-  ],
-  "Client": [
-    {
-      "Name": "NotEnoughItems",
-      "Version": "1.0.5.120",
-      "Uri": "https://minecraft.curseforge.com/projects/notenoughitems/files/2302312/download",
-      "Dependencies": [
-        {
-          "Name": "CodeChickenCore",
-          "Version": "1.0.7.47",
-          "Uri": "https://minecraft.curseforge.com/projects/codechickencore/files/2262089/download"
         }
       ]
     }

@@ -5,6 +5,7 @@ using MinecraftServerManager.Models.ServerModels;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.IO;
 
 namespace MinecraftServerManager {
   class ServerController {
@@ -21,7 +22,7 @@ namespace MinecraftServerManager {
     public void StartAll() {
       foreach(ServerManager server in Config.Servers) {
         Thread serverThread = new Thread(async () => {
-          await server.Start();
+          await server.Start(Path.Combine(Config.Path, server.Name));
         });
         serverThread.Start();
         ServerThreads.Add(server.Name, serverThread);

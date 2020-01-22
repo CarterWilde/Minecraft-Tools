@@ -7,6 +7,7 @@
       "Name": "Server0001",
       "GameVersion": "1.7.10",
       "ServerURL": "https://launcher.mojang.com/v1/objects/3dc3d84a581f14691199cf6831b71ed1296a9fdf/server.jar",
+      "OutputFile":  "output.stream.log",
       "VMProperties": {
         "Xmx": "2048M",
         "Xms": "2048M",

@@ -32,10 +32,6 @@ namespace MinecraftServerManager {
               string serverChoice = Console.ReadLine();
               foreach(ServerManager server in controller.Config.Servers) {
                 if(serverChoice == server.Name) {
-                  bool isExited = false;
-                  while(!isExited) {
-                    Console.WriteLine(server.OutputStream.ReadLine());
-                  }
                 }
               }
               break;

@@ -9,6 +9,7 @@ namespace MinecraftServerManager.Models {
     public string Name { get; set; }
     public string GameVersion { get; set; }
     public string ServerURL { get; set; }
+    public string OutputFile { get; set; }
     public Dictionary<string, string> VMProperties { get; set; }
     public Dictionary<string, string> Properties { get; set; }
     public IList<string> BannedIPS { get; set; }

@@ -8,7 +8,7 @@ namespace MinecraftServerManager {
   class Program {
     static async Task Main(string[] args) {
       FileStream fileStream = new FileStream("./servers.config.json", FileMode.Open, FileAccess.Read);
-      ServerConfig config = await ModelSerializer.ServerConfig(fileStream);
+      ServerConfig config = await ModelSerializer.ServerConfigAsync(fileStream);
       ServerBuilder builder = new ServerBuilder(config);
       ServerController controller = new ServerController(config);
       builder.Build();

@@ -11,7 +11,8 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace MinecraftServerManager {
-  class ServerBuilder {
+  public class ServerBuilder {
+    public event EventHandler<EventArgs> BuildComplete;
     private ServerConfig Config { get; }
     public ServerBuilder(ServerConfig config) {
       Config = config;
@@ -39,6 +40,11 @@ namespace MinecraftServerManager {
         });
         i++;
       });
+      OnBuildComplete(new EventArgs());
+    }
+
+    protected virtual void OnBuildComplete(EventArgs args) {
+      BuildComplete?.Invoke(this, args);
     }
 
     public async Task Build(Server server) {

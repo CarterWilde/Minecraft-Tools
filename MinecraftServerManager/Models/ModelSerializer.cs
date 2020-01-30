@@ -11,7 +11,7 @@ using MinecraftServerManager.Models.ServerModels;
 using System.Diagnostics;
 
 namespace MinecraftServerManager.Models {
-  class ModelSerializer {
+  public class ModelSerializer {
     private string Path { get; }
     public ModelSerializer(string path) {
       Path = path;
@@ -23,11 +23,15 @@ namespace MinecraftServerManager.Models {
     public static async Task<Server> Server(Stream content) {
       return await JsonSerializer.DeserializeAsync<Server>(content);
     }
-    public async Task<ServerConfig> ServerConfig() {
+    public async Task<ServerConfig> ServerConfigAsync() {
       FileStream stream = new FileStream(Path, FileMode.Open, FileAccess.Read);
-      return await ServerConfig(stream);
+      return await ServerConfigAsync(stream);
     }
-    public static async Task<ServerConfig> ServerConfig(Stream content) {
+    public static ServerConfig ServerConfig(Stream content) {
+      StreamReader reader = new StreamReader(content);
+      return JsonSerializer.Deserialize<ServerConfig>(reader.ReadToEnd());
+    }
+    public static async Task<ServerConfig> ServerConfigAsync(Stream content) {
       return await JsonSerializer.DeserializeAsync<ServerConfig>(content);
     }
     public static string ToPropertiesString(string key, string value) {

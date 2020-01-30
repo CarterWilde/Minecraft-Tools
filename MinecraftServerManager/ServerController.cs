@@ -9,13 +9,15 @@ using System.IO;
 using MinecraftServerManager.Models;
 
 namespace MinecraftServerManager {
-  class ServerController {
+  public class ServerController {
+    public event EventHandler<EventArgs> ServersStarted;
+
     public ServerConfig Config { get; private set; }
     private IDictionary<string, Thread> ServerThreads { get; set; }
-    private ServerBuilder builder { get; set; }
+    private ServerBuilder Builder { get; set; }
     public ServerController(ServerConfig config) {
       Config = config;
-      builder = new ServerBuilder(Config);
+      Builder = new ServerBuilder(Config);
       ServerThreads = new Dictionary<string, Thread>();
       foreach(ServerManager server in Config.Servers) {
         server.StartInfo = Models.ModelSerializer.VMPropertiesToStartInfo(server, Config);
@@ -23,7 +25,7 @@ namespace MinecraftServerManager {
     }
 
     public async void CreateServer(Server server) {
-      await builder.Build(server);
+      await Builder.Build(server);
       Config.Servers.Add(new ServerManager(server, Config.Path));
     }
 
@@ -51,6 +53,7 @@ namespace MinecraftServerManager {
     }
 
     public void StartAll() {
+      Console.WriteLine("Starting servers!");
       foreach(ServerManager server in Config.Servers) {
         Thread serverThread = new Thread(async () => {
           await server.StartAsync(Config.Path);
@@ -58,6 +61,11 @@ namespace MinecraftServerManager {
         serverThread.Start();
         ServerThreads.Add(server.Name, serverThread);
       }
+      OnServersStarted(new EventArgs());
+    }
+
+    protected virtual void OnServersStarted(EventArgs eventArgs) {
+      ServersStarted?.Invoke(this, eventArgs);
     }
 
     public void StopAll() {

@@ -9,7 +9,7 @@ using MinecraftServerManager.Models;
 
 namespace MinecraftServerManager {
   public class ServerManager : Server {
-
+    public event EventHandler<CustomDataReceivedEventArgs> OutputData_Recived;
     [JsonIgnore]
     private Process Process { get; set; }
     [JsonIgnore]
@@ -53,33 +53,23 @@ namespace MinecraftServerManager {
     }
 
     public async Task StartAsync(string path) {
-      string folder = Path.Combine(path, Name);
-      FullOutputFilePath = Path.Combine(folder, OutputFile);
-      File = new FileStream(FullOutputFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
-      FileWriter = new StreamWriter(File);
-      FileWriter.AutoFlush = true;
-      FileReader = new StreamReader(File);
-      Process = new Process();
-      Process.StartInfo = StartInfo;
-      Process.StartInfo.RedirectStandardInput = true;
-      Process.StartInfo.RedirectStandardOutput = true;
-      Process.StartInfo.WorkingDirectory = folder;
-      Process.OutputDataReceived += Process_OutputDataReceived;
-      Process.Start();
-      Process.BeginOutputReadLine();
+      Start(path);
       await Task.CompletedTask;
     }
     public void Start(string path) {
-      FullOutputFilePath = Path.Combine(Path.Combine(Name, path), OutputFile);
+      string folder = Path.Combine(path, Name);
+      FullOutputFilePath = Path.Combine(folder, OutputFile);
       File = new FileStream(FullOutputFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
-      FileWriter = new StreamWriter(File);
-      FileWriter.AutoFlush = true;
+      FileWriter = new StreamWriter(File) {
+        AutoFlush = true
+      };
       FileReader = new StreamReader(File);
-      Process = new Process();
-      Process.StartInfo = StartInfo;
+      Process = new Process {
+        StartInfo = StartInfo
+      };
       Process.StartInfo.RedirectStandardInput = true;
       Process.StartInfo.RedirectStandardOutput = true;
-      Process.StartInfo.WorkingDirectory = $"Servers/{Name}";
+      Process.StartInfo.WorkingDirectory = folder;
       Process.OutputDataReceived += Process_OutputDataReceived;
       Process.Start();
       Process.BeginOutputReadLine();
@@ -87,11 +77,20 @@ namespace MinecraftServerManager {
 
     private void Process_OutputDataReceived(object sender, DataReceivedEventArgs e) {
       FileWriter.WriteLine(e.Data);
+      OnOutputDataReceived(new CustomDataReceivedEventArgs(e.Data, Name));
+    }
+
+    protected virtual void OnOutputDataReceived(CustomDataReceivedEventArgs e) {
+      OutputData_Recived?.Invoke(this, e);
     }
 
     public string GetLog() {
-      FileReader.BaseStream.Seek(0, SeekOrigin.Begin);
-      return FileReader.ReadToEnd();
+      if(FileReader != null) {
+        FileReader.BaseStream.Seek(0, SeekOrigin.Begin);
+        return FileReader.ReadToEnd();
+      } else {
+        return "Server Wasn't Ready!";
+      }
     }
 
     public async Task<string> GetLogAsync() {
@@ -106,6 +105,15 @@ namespace MinecraftServerManager {
     public async Task Stop() {
       Process.Kill();
       await Task.CompletedTask;
+    }
+  }
+
+  public class CustomDataReceivedEventArgs{
+    public string Data { get; set; }
+    public string Name { get; set; }
+    public CustomDataReceivedEventArgs(string data, string name) {
+      Name = name;
+      Data = $"[{Name}]" + data;
     }
   }
 }

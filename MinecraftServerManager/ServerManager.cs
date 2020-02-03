@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using MinecraftServerManager.Models;
+using MinecraftServerManager.Models.ServerModels;
 
 namespace MinecraftServerManager {
   public class ServerManager : Server {
@@ -26,7 +27,8 @@ namespace MinecraftServerManager {
     public string FullOutputFilePath { get; private set; }
     public ServerManager() {}
 
-    public ServerManager(Server server, string path) : base(server.Name
+    public ServerManager(Server server, string path, ServerConfig config) : base(
+                                               server.Name
                                               ,server.GameVersion
                                               ,server.ServerURL
                                               ,server.OutputFile
@@ -36,7 +38,7 @@ namespace MinecraftServerManager {
                                               ,server.Bans
                                               ,server.Ops
                                               ,server.Modpack){
-      Start(path);
+      Start(path, config);
     }
 
     public void UpdateProps(Server server) {
@@ -52,11 +54,12 @@ namespace MinecraftServerManager {
       Modpack = server.Modpack;
     }
 
-    public async Task StartAsync(string path) {
-      Start(path);
+    public async Task StartAsync(string path, ServerConfig config) {
+      Start(path, config);
       await Task.CompletedTask;
     }
-    public void Start(string path) {
+    public void Start(string path, ServerConfig config) {
+      StartInfo = Models.ModelSerializer.VMPropertiesToStartInfo(this, config);
       string folder = Path.Combine(path, Name);
       FullOutputFilePath = Path.Combine(folder, OutputFile);
       File = new FileStream(FullOutputFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);

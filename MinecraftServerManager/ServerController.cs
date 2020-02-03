@@ -26,7 +26,7 @@ namespace MinecraftServerManager {
 
     public async void CreateServer(Server server) {
       await Builder.Build(server);
-      Config.Servers.Add(new ServerManager(server, Config.Path));
+      Config.Servers.Add(new ServerManager(server, Config.Path, Config));
     }
 
     public ServerManager ReadServer(string name) {
@@ -56,7 +56,7 @@ namespace MinecraftServerManager {
       Console.WriteLine("Starting servers!");
       foreach(ServerManager server in Config.Servers) {
         Thread serverThread = new Thread(async () => {
-          await server.StartAsync(Config.Path);
+          await server.StartAsync(Config.Path, Config);
         });
         serverThread.Start();
         ServerThreads.Add(server.Name, serverThread);

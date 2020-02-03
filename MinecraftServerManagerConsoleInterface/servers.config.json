@@ -9,8 +9,8 @@
       "ServerURL": "https://launcher.mojang.com/v1/objects/3dc3d84a581f14691199cf6831b71ed1296a9fdf/server.jar",
       "OutputFile":  "output.stream.log",
       "VMProperties": {
-        "Xmx": "2048M",
-        "Xms": "2048M",
+        "Xmx": "4096M",
+        "Xms": "4096M",
         "jar": "true",
         "nogui": "true"
       },
@@ -21,7 +21,7 @@
         "enable-query": "false",
         "allow-flight": "false",
         "announce-player-achievements": "true",
-        "server-port": "25555",
+        "server-port": "25554",
         "enable-rcon": "false",
         "force-gamemode": "false",
         "max-build-height": "256",

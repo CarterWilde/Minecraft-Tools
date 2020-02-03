@@ -26,15 +26,17 @@ namespace MinecraftServerManagerWebAPI.Controllers {
     [Route("/CreateServer")]
     public IActionResult PostNewServer(Server server) {
       Response.Headers.Add("Access-Control-Allow-Origin", "*");
-      server.Name.Replace("\"", "");
-      server.GameVersion.Replace("\"", "");
-      server.ServerURL.Replace("\"", "");
-      server.OutputFile.Replace("\"", "");
-      foreach(string s in server.VMProperties.Keys) {
-        server.VMProperties[s].Replace("\"", "");
+      server.Name = server.Name.Replace("\"", "");
+      server.GameVersion = server.GameVersion.Replace("\"", "");
+      server.ServerURL = server.ServerURL.Replace("\"", "");
+      server.OutputFile = server.OutputFile.Replace("\"", "");
+      Dictionary<string, string> vmprops = new Dictionary<string, string>(server.VMProperties);
+      foreach(string s in vmprops.Keys) {
+        server.VMProperties[s] = server.VMProperties[s].Replace("\"", "");
       }
-      foreach(string s in server.Properties.Keys) {
-        server.Properties[s].Replace("\"", "");
+      Dictionary<string, string> props = new Dictionary<string, string>(server.Properties);
+      foreach(string s in props.Keys) {
+        server.Properties[s] = server.Properties[s].Replace("\"", "");
       }
       if(!ModelState.IsValid) return BadRequest("Invalid Data");
       Startup.controller.CreateServer(server);

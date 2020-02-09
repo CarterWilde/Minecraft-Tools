@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.IO;
 using MinecraftServerManager.Models;
+using System.ComponentModel;
 
 namespace MinecraftServerManager {
-  public class ServerController {
+  public class ServerController : INotifyPropertyChanged {
     public event EventHandler<EventArgs> ServersStarted;
+    public event PropertyChangedEventHandler PropertyChanged;
 
     public ServerConfig Config { get; private set; }
     private IDictionary<string, Thread> ServerThreads { get; set; }
@@ -20,13 +22,19 @@ namespace MinecraftServerManager {
       Builder = new ServerBuilder(Config);
       ServerThreads = new Dictionary<string, Thread>();
       foreach(ServerManager server in Config.Servers) {
-        server.StartInfo = Models.ModelSerializer.VMPropertiesToStartInfo(server, Config);
+        server.StartInfo = ModelSerializer.VMPropertiesToStartInfo(server, Config);
       }
+      PropertyChanged += ServerController_PropertyChanged;
+    }
+
+    private void ServerController_PropertyChanged(object sender, PropertyChangedEventArgs e) {
+      ModelSerializer.UpdateConfig(Config);
     }
 
     public async void CreateServer(Server server) {
       await Builder.Build(server);
       Config.Servers.Add(new ServerManager(server, Config.Path, Config));
+      PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Config"));
     }
 
     public ServerManager ReadServer(string name) {
@@ -36,6 +44,7 @@ namespace MinecraftServerManager {
     public void UpdateServer(string name, Server server) {
       ServerManager selected = (from s in Config.Servers where s.Name == name select s).First();
       selected.UpdateProps(server);
+      PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Config"));
     }
 
     public void SendCommand(string name, string v) {
@@ -49,6 +58,7 @@ namespace MinecraftServerManager {
       Config.Servers.Remove(server);
       ServerThreads[server.Name].Abort();
       ServerThreads.Remove(server.Name);
+      PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Config"));
       return server;
     }
 
@@ -61,7 +71,8 @@ namespace MinecraftServerManager {
       Console.WriteLine("Starting servers!");
       foreach(ServerManager server in Config.Servers) {
         Thread serverThread = new Thread(async () => {
-          await server.StartAsync(Config.Path, Config);
+          server.Config = Config;
+          await server.StartAsync(Config.Path);
         });
         serverThread.Start();
         ServerThreads.Add(server.Name, serverThread);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -9,8 +10,10 @@ using MinecraftServerManager.Models;
 using MinecraftServerManager.Models.ServerModels;
 
 namespace MinecraftServerManager {
-  public class ServerManager : Server {
+  public class ServerManager : Server, INotifyPropertyChanged{
     public event EventHandler<CustomDataReceivedEventArgs> OutputData_Recived;
+    public event PropertyChangedEventHandler PropertyChanged;
+
     [JsonIgnore]
     private Process Process { get; set; }
     [JsonIgnore]
@@ -25,6 +28,8 @@ namespace MinecraftServerManager {
     public ProcessStartInfo StartInfo { get; set; }
     [JsonIgnore]
     public string FullOutputFilePath { get; private set; }
+    [JsonIgnore]
+    public ServerConfig Config { get; set; }
     public ServerManager() {}
 
     public ServerManager(Server server, string path, ServerConfig config) : base(
@@ -38,7 +43,13 @@ namespace MinecraftServerManager {
                                               ,server.Bans
                                               ,server.Ops
                                               ,server.Modpack){
-      Start(path, config);
+      Config = config;
+      PropertyChanged += ServerManager_PropertyChanged;
+      Start(path);
+    }
+
+    private void ServerManager_PropertyChanged(object sender, PropertyChangedEventArgs e) {
+      ModelSerializer.UpdateConfig(Config);
     }
 
     public void UpdateProps(Server server) {
@@ -54,12 +65,13 @@ namespace MinecraftServerManager {
       Modpack = server.Modpack;
     }
 
-    public async Task StartAsync(string path, ServerConfig config) {
-      Start(path, config);
+    public async Task StartAsync(string path) {
+      Start(path);
+      PropertyChanged += ServerManager_PropertyChanged;
       await Task.CompletedTask;
     }
-    public void Start(string path, ServerConfig config) {
-      StartInfo = Models.ModelSerializer.VMPropertiesToStartInfo(this, config);
+    public void Start(string path) {
+      StartInfo = ModelSerializer.VMPropertiesToStartInfo(this, Config);
       string folder = Path.Combine(path, Name);
       FullOutputFilePath = Path.Combine(folder, OutputFile);
       File = new FileStream(FullOutputFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
@@ -74,11 +86,14 @@ namespace MinecraftServerManager {
       Process.StartInfo.RedirectStandardOutput = true;
       Process.StartInfo.WorkingDirectory = folder;
       Process.OutputDataReceived += Process_OutputDataReceived;
+      PropertyChanged += ServerManager_PropertyChanged;
+      Console.WriteLine($"[{Name}]Has Started at {Process.StartInfo.WorkingDirectory}");
       Process.Start();
       Process.BeginOutputReadLine();
     }
 
     private void Process_OutputDataReceived(object sender, DataReceivedEventArgs e) {
+      FileWriter.BaseStream.Seek(0, SeekOrigin.End);
       FileWriter.WriteLine(e.Data);
       OnOutputDataReceived(new CustomDataReceivedEventArgs(e.Data, Name));
     }

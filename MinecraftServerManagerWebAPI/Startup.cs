@@ -22,6 +22,7 @@ namespace MinecraftServerManagerWebAPI {
       Configuration = configuration;
       FileStream fileStream = new FileStream("./servers.config.json", FileMode.Open, FileAccess.Read);
       ServerConfig config = ModelSerializer.ServerConfig(fileStream);
+      fileStream.Close();
       ServerBuilder builder = new ServerBuilder(config);
       controller = new ServerController(config);
       builder.Build();

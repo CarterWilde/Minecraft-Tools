@@ -66,5 +66,21 @@ namespace MinecraftServerManager.Models {
       }
       return info;
     }
+
+    public static void UpdateConfig(ServerConfig config) {
+      using(StreamWriter writer = new StreamWriter(
+        new FileStream("./servers.config.json"
+                      ,FileMode.Open
+                      ,FileAccess.Write)
+        )) {
+        writer.AutoFlush = true;
+        JsonSerializerOptions options = new JsonSerializerOptions() {
+          WriteIndented = true,
+          PropertyNamingPolicy = null
+        };
+        string configJSON = JsonSerializer.Serialize(config, config.GetType(), options);
+        writer.Write(configJSON);
+      }
+    }
   }
 }

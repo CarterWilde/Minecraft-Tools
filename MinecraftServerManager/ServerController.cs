@@ -38,6 +38,11 @@ namespace MinecraftServerManager {
       selected.UpdateProps(server);
     }
 
+    public void SendCommand(string name, string v) {
+      ServerManager selected = (from s in Config.Servers where s.Name == name select s).First();
+      selected.SendCommand(v);
+    }
+
     public async Task<Server> DeleteServer(string name) {
       ServerManager server = (from s in Config.Servers where s.Name == name select s).First();
       await server.Stop();

@@ -67,6 +67,8 @@ namespace MinecraftServerManager {
       Console.WriteLine($"Copying server binary for {server.Name} from {downloadServer.Name} [{from}]...");
       File.Copy(from, destination, true);
       Console.WriteLine($"Finished copying server binary for {server.Name} from {downloadServer.Name} [{from}]!");
+      await CreateEULA(server);
+      await CreateProperites(server);
       await Task.CompletedTask;
     }
 

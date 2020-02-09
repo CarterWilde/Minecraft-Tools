@@ -16,6 +16,7 @@
       },
       "Properties": {
         "op-permission-level": "4",
+        "server-ip": "",
         "allow-nether": "true",
         "level-name": "world",
         "enable-query": "false",
@@ -58,6 +59,7 @@
       "Properties": {
         "op-permission-level": "4",
         "allow-nether": "true",
+        "server-ip": "",
         "level-name": "world",
         "enable-query": "false",
         "allow-flight": "false",
@@ -99,6 +101,7 @@
       "Properties": {
         "op-permission-level": "4",
         "allow-nether": "true",
+        "server-ip": "",
         "level-name": "world",
         "enable-query": "false",
         "allow-flight": "false",

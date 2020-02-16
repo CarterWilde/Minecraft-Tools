@@ -33,6 +33,25 @@ namespace MinecraftServerManagerWebAPI.Controllers {
     public async Task<string> GetServerOutput(string ServerID) {
       return await Startup.controller.ServerLog(ServerID);
     }
+
+    [HttpGet]
+    [Route("/Servers/{ServerID}/Start")]
+    public void StartServer(string ServerID) {
+      Startup.controller.StartServer(ServerID);
+    }
+
+    [HttpGet]
+    [Route("/Servers/{ServerID}/Stop")]
+    public async Task StopServerAsync(string ServerID) {
+      await Startup.controller.StopServer(ServerID);
+    }
+
+    [HttpGet]
+    [Route("/Servers/{ServerID}/Restart")]
+    public async Task RestartServerAsync(string ServerID) {
+      await Startup.controller.RestartServer(ServerID);
+    }
+
     [HttpGet]
     [Route("/Servers/{ServerID}/{command}/{value}")]
     public void SendServerCommandPair(string ServerID, string command, string value) {
@@ -61,6 +80,9 @@ namespace MinecraftServerManagerWebAPI.Controllers {
         server.Properties[s] = server.Properties[s].Replace("\"", "");
         if(s == "gamemode" || s == "difficulty") {
           server.Properties[s] = server.Properties[s].ToLower();
+        }
+        if(s == "server-ip") {
+          server.Properties[s] = "";
         }
       }
       if(!ModelState.IsValid) return BadRequest("Invalid Data");

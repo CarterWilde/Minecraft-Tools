@@ -10,7 +10,7 @@ using MinecraftServerManager.Models;
 using MinecraftServerManager.Models.ServerModels;
 
 namespace MinecraftServerManager {
-  public class ServerManager : Server, INotifyPropertyChanged{
+  public class ServerManager : Server, INotifyPropertyChanged {
     public event EventHandler<CustomDataReceivedEventArgs> OutputData_Recived;
     public event PropertyChangedEventHandler PropertyChanged;
 
@@ -30,6 +30,8 @@ namespace MinecraftServerManager {
     public string FullOutputFilePath { get; private set; }
     [JsonIgnore]
     public ServerConfig Config { get; set; }
+    public ServerStatus Status { get; private set; }
+    private string ConfigPath { get; set; }
     public ServerManager() {}
 
     public ServerManager(Server server, string path, ServerConfig config) : base(
@@ -45,7 +47,8 @@ namespace MinecraftServerManager {
                                               ,server.Modpack){
       Config = config;
       PropertyChanged += ServerManager_PropertyChanged;
-      Start(path);
+      ConfigPath = path;
+      Start(ConfigPath);
     }
 
     private void ServerManager_PropertyChanged(object sender, PropertyChangedEventArgs e) {
@@ -71,6 +74,7 @@ namespace MinecraftServerManager {
       await Task.CompletedTask;
     }
     public void Start(string path) {
+      Status = ServerStatus.Starting;
       StartInfo = ModelSerializer.VMPropertiesToStartInfo(this, Config);
       string folder = Path.Combine(path, Name);
       FullOutputFilePath = Path.Combine(folder, OutputFile);
@@ -90,12 +94,13 @@ namespace MinecraftServerManager {
       Console.WriteLine($"[{Name}]Has Started at {Process.StartInfo.WorkingDirectory}");
       Process.Start();
       Process.BeginOutputReadLine();
+      Status = ServerStatus.Online;
     }
 
     private void Process_OutputDataReceived(object sender, DataReceivedEventArgs e) {
-      FileWriter.BaseStream.Seek(0, SeekOrigin.End);
-      FileWriter.WriteLine(e.Data);
-      OnOutputDataReceived(new CustomDataReceivedEventArgs(e.Data, Name));
+        FileWriter.BaseStream.Seek(0, SeekOrigin.End);
+        FileWriter.WriteLine(e.Data);
+        OnOutputDataReceived(new CustomDataReceivedEventArgs(e.Data, Name));
     }
 
     protected virtual void OnOutputDataReceived(CustomDataReceivedEventArgs e) {
@@ -121,7 +126,12 @@ namespace MinecraftServerManager {
     }
 
     public async Task Stop() {
+      Status = ServerStatus.Stopping;
+      SendCommand("/stop");
       Process.Kill();
+      FileReader.Close();
+      FileWriter.Close();
+      Status = ServerStatus.Stopped;
       await Task.CompletedTask;
     }
   }

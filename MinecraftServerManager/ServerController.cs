@@ -37,6 +37,26 @@ namespace MinecraftServerManager {
       PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Config"));
     }
 
+    public void StartServer(string name) {
+      ServerManager s = (from server in Config.Servers where server.Name == name select server).First();
+      s.Start(Config.Path);
+    }
+
+    public async Task StopServer(string name) {
+      ServerManager s = (from server in Config.Servers where server.Name == name select server).First();
+      s.SendCommand("/save-all");
+      Thread.Sleep(1000);
+      await s.Stop();
+    }
+
+    public async Task RestartServer(string name) {
+      ServerManager s = (from server in Config.Servers where server.Name == name select server).First();
+      s.SendCommand("/save-all");
+      Thread.Sleep(1000);
+      await s.Stop();
+      await s.StartAsync(Config.Path);
+    }
+
     public ServerManager ReadServer(string name) {
       return (from server in Config.Servers where server.Name == name select server).First();
     }

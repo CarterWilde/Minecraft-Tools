@@ -82,7 +82,6 @@ namespace MinecraftServerManager {
       FileWriter = new StreamWriter(File) {
         AutoFlush = true
       };
-      FileReader = new StreamReader(File);
       Process = new Process {
         StartInfo = StartInfo
       };
@@ -98,27 +97,41 @@ namespace MinecraftServerManager {
     }
 
     private void Process_OutputDataReceived(object sender, DataReceivedEventArgs e) {
+      if(FileWriter.BaseStream == null) return;
+      try {
         FileWriter.BaseStream.Seek(0, SeekOrigin.End);
         FileWriter.WriteLine(e.Data);
-        OnOutputDataReceived(new CustomDataReceivedEventArgs(e.Data, Name));
+      }
+      catch(ObjectDisposedException ode) { }
+      OnOutputDataReceived(new CustomDataReceivedEventArgs(e.Data, Name));
     }
 
     protected virtual void OnOutputDataReceived(CustomDataReceivedEventArgs e) {
       OutputData_Recived?.Invoke(this, e);
     }
 
-    public string GetLog() {
-      if(FileReader != null) {
-        FileReader.BaseStream.Seek(0, SeekOrigin.Begin);
-        return FileReader.ReadToEnd();
-      } else {
-        return "Server Wasn't Ready!";
-      }
-    }
+    //public string GetLog() {
+    //  if(FileReader != null) {
+    //    FileReader.BaseStream.Seek(0, SeekOrigin.Begin);
+    //    return FileReader.ReadToEnd();
+    //  } else {
+    //    return "Server Wasn't Ready!";
+    //  }
+    //}
 
     public async Task<string> GetLogAsync() {
-      FileReader.BaseStream.Seek(0, SeekOrigin.Begin);
-      return await FileReader.ReadToEndAsync();
+      try {
+        FileReader = new StreamReader(File);
+        if(FileReader.BaseStream == null || !FileReader.BaseStream.CanRead || !FileReader.BaseStream.CanSeek) return "Server isn't online";
+        FileReader.BaseStream.Seek(0, SeekOrigin.Begin);
+        return await FileReader.ReadToEndAsync();
+      }
+      catch(ArgumentOutOfRangeException e) {
+        return "Starting or Stopping";
+      }
+      catch(ArgumentException e) {
+        return "Starting or Stopping";
+      }
     }
 
     public void SendCommand(string command) {
@@ -128,9 +141,15 @@ namespace MinecraftServerManager {
     public async Task Stop() {
       Status = ServerStatus.Stopping;
       SendCommand("/stop");
+      try {
+        FileReader.Close();
+      }
+      catch(ObjectDisposedException ode) {}
+      try {
+        FileWriter.Close();
+      }
+      catch(ObjectDisposedException ode) {}
       Process.Kill();
-      FileReader.Close();
-      FileWriter.Close();
       Status = ServerStatus.Stopped;
       await Task.CompletedTask;
     }
